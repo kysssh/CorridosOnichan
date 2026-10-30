@@ -36,7 +36,7 @@ struct SegTree {
         if(l == r || lazy[id] == NEUT_LAZY) return;
         int m = (l + r) / 2;
         int idl = id + 1;
-        int idr = id + 2*(m - l - 1);
+        int idr = id + 2*(m - l + 1);
         aply(lazy[id], idl, l, m);
         aply(lazy[id], idr, m+1, r);
         lazy[id] = NEUT_LAZY;
@@ -58,7 +58,7 @@ struct SegTree {
         nodes[id] = f(nodes[idl], nodes[idr]);
     }
     T query(int ql, int qr, int id, int l, int r){
-        if(r < ql && l > qr){
+        if(r < ql || l > qr){
             return NEUT;
         }
         else if(ql <= l && r <= qr){
