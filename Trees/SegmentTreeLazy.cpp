@@ -2,8 +2,10 @@
 #include <concepts>
 using namespace std;
 template <typename T>
-concept AptObj = requires(T a, T b) {
-    { a + b } -> convertible_to<T>;    
+concept AptObj = requires(T a, T b, int cnt) {
+    { a + b } -> convertible_to<T>;
+    { a += b };
+    { cnt * a } -> convertible_to<T>;
 } && totally_ordered<T>;
 template <AptObj T>
 struct SegTree {
@@ -18,7 +20,7 @@ struct SegTree {
          return a + b;
     }
     void aply(T val, int id, int l, int r){
-        nodes[id] += (r - l - 1) * val;
+        nodes[id] += (r - l + 1) * val;
         lazy[id] += val;
     }
     void build(vector<T> &x, int id, int l, int r){
@@ -29,7 +31,7 @@ struct SegTree {
             int idr = id + 2*(m - l + 1);
             build(x, idl, l, m);
             build(x, idr, m+1, r);
-            nodes[id] = f(idl, idr);
+            nodes[id] = f(nodes[idl], nodes[idr]);
         }
     }
     void push(int id, int l, int r){
@@ -67,7 +69,7 @@ struct SegTree {
         push(id, l, r);
         int m = (l + r) / 2;
         int idl = id + 1;
-        int idr = id + 2*(m - l - 1);
+        int idr = id + 2*(m - l + 1);
         return f(query(ql, qr, idl, l, m), query(ql, qr, idr, m+1, r));
     }
 };
