@@ -1,0 +1,44 @@
+\subsection{Teoría Combinatoria y Conteo}
+
+\textbf{1. Principios Fundamentales}
+\begin{itemize}
+    \item \textbf{Aditivo (O):} Eventos mutuamente excluyentes. Total $= A + B$.
+    \item \textbf{Multiplicativo (Y):} Eventos independientes secuenciales. Total $= A \times B$.
+    \item \textbf{Inclusión-Exclusión (PIE):} $|A \cup B \cup C| = |A| + |B| + |C| - |A \cap B| - |A \cap C| - |B \cap C| + |A \cap B \cap C|$. (Generalizable para $K$ conjuntos usando Bitmasks).
+    \item \textbf{Principio del Palomar:} Si $N$ objetos se meten en $K$ cajas, una caja tiene $\ge \lceil N / K \rceil$ objetos.
+\end{itemize}
+
+\textbf{2. Fórmulas de Selección (Permutaciones y Combinaciones)}
+\begin{itemize}
+    \item \textbf{Permutación Básica:} Ordenar $N$ elementos distintos $= N!$
+    \item \textbf{Permutación con Repetición:} $N$ elementos con grupos de tamaño $n_1, n_2 \dots \rightarrow \frac{N!}{n_1! \cdot n_2! \dots}$
+    \item \textbf{Permutación Circular:} Ordenar $N$ elementos en círculo $= (N-1)!$
+    \item \textbf{Combinaciones $\binom{N}{K}$:} Seleccionar $K$ de $N$ (sin orden) $= \frac{N!}{K!(N-K)!}$
+    \item \textbf{Identidad de Pascal (DP):} $\binom{N}{K} = \binom{N-1}{K-1} + \binom{N-1}{K}$. Útil si $N \le 2000$ (sin inversos modulares).
+    \item \textbf{Suma Binomial:} $\sum_{K=0}^{N} \binom{N}{K} = 2^N$.
+\end{itemize}
+
+\textbf{3. Distribución (Stars and Bars)}
+Repartir $N$ objetos idénticos en $K$ recipientes distintos ($x_1 + x_2 + \dots + x_K = N$):
+\begin{itemize}
+    \item \textbf{Soluciones enteras NO negativas ($x_i \ge 0$):} $\binom{N+K-1}{K-1}$.
+    \item \textbf{Soluciones enteras positivas ($x_i \ge 1$):} $\binom{N-1}{K-1}$ (Para $N \ge K$).
+\end{itemize}
+
+\textbf{4. Números de Catalan ($C_N$)}
+Resuelve: secuencias de paréntesis válidas, árboles binarios, triangulación de polígonos.
+\begin{itemize}
+    \item \textbf{Fórmula directa:} $C_N = \frac{1}{N+1} \binom{2N}{N}$
+    \item \textbf{Recurrencia ($O(N^2)$):} $C_0 = 1, \quad C_N = \sum_{i=0}^{N-1} C_i \cdot C_{N-1-i}$
+\end{itemize}
+
+\textbf{5. Combinatoria Modular en $O(1)$ (Módulo Primo $M$)}
+\begin{itemize}
+    \item \textbf{Precomputación $O(N)$:}
+    \begin{enumerate}
+        \item $fact[i] = (fact[i-1] \cdot i) \bmod M$.
+        \item $invfact[N] = binpow(fact[N], M-2, M)$.
+        \item $invfact[i-1] = (invfact[i] \cdot i) \bmod M$. (Retroceso lineal).
+    \end{enumerate}
+    \item \textbf{Query $O(1)$:} $\binom{N}{K} = (fact[N] \cdot invfact[K] \bmod M) \cdot invfact[N-K] \bmod M$.
+\end{itemize}

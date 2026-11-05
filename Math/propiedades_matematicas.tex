@@ -1,0 +1,44 @@
+\subsection{Matemática, Divisibilidad y Aritmética Modular}
+
+\textbf{1. Paridad e Invariantes}
+\begin{itemize}
+    \item La paridad de $(A \pm B)$ es idéntica a la de $(A \oplus B)$.
+    \item Si una operación suma o resta un número par, la paridad original es invariante.
+\end{itemize}
+
+\textbf{2. Divisibilidad y GCD}
+\begin{itemize}
+    \item \textbf{Identidades:} $GCD(A,0) = |A|, \quad GCD(A,B) = GCD(A-B, B) = GCD(A \bmod B, B)$.
+    \item \textbf{Coprimos:} $GCD(A, A+1) = 1$. Dos enteros consecutivos nunca comparten divisores $>1$.
+    \item \textbf{LCM seguro:} $LCM(A,B) = (A / GCD(A,B)) \cdot B$. (Evita overflow).
+    \item \textbf{Ecuación Diofántica Lineal:} $Ax + By = C$ tiene solución entera $\iff C \equiv 0 \pmod{GCD(A,B)}$.
+\end{itemize}
+
+\textbf{3. Factorización y Divisores}
+Sea la factorización $N = p_1^{e_1} \cdot p_2^{e_2} \dots p_k^{e_k}$:
+\begin{itemize}
+    \item \textbf{Cantidad de divisores ($\tau$):} $\tau(N) = (e_1 + 1)(e_2 + 1)\dots(e_k + 1)$.
+    \item \textbf{Suma de divisores ($\sigma$):} $\sigma(N) = \prod_{i=1}^{k} \frac{p_i^{e_i+1}-1}{p_i-1}$.
+    \item \textbf{Función Euler ($\varphi$):} Cantidad de coprimos con $N$ hasta $N$. \\ $\varphi(N) = N \prod_{i=1}^{k} (1 - \frac{1}{p_i})$. Si $P$ es primo, $\varphi(P) = P-1$.
+\end{itemize}
+
+\textbf{4. Identidades Modulares}
+\begin{itemize}
+    \item \textbf{Resta Segura (C++):} $(A - B \bmod M + M) \bmod M$.
+    \item \textbf{División prohibida:} $(A/B) \bmod M \neq (A \bmod M) / (B \bmod M)$.
+    \item \textbf{Reducción de Exponentes:} Si calculas $A^{B^C} \bmod M$ y $M$ es primo, el exponente $B^C$ se reduce módulo $M-1$. ($A^{B^C \bmod (M-1)} \bmod M$).
+\end{itemize}
+
+\textbf{5. Inverso Modular (División)}
+El inverso de $A$ módulo $M$ ($A^{-1}$) solo existe si $GCD(A, M) = 1$.
+\begin{itemize}
+    \item \textbf{Módulo Primo (Fermat):} $A^{-1} \equiv A^{M-2} \pmod M$. Calculable en $O(\log M)$ vía `binpow`.
+    \item \textbf{Módulo No Primo (Euler):} $A^{-1} \equiv A^{\varphi(M)-1} \pmod M$.
+    \item \textbf{División con Inverso:} $(A / B) \bmod M = (A \cdot B^{-1}) \bmod M$.
+\end{itemize}
+
+\textbf{6. Algoritmos en $O(N)$ y $O(\log N)$}
+\begin{itemize}
+    \item \textbf{Smallest Prime Factor (SPF):} Precomputar el menor divisor primo en $O(N \log \log N)$ permite responder queries de factorización prima en $O(\log X)$.
+    \item \textbf{Exponenciación Binaria (\texttt{binpow}):} Calcula $A^B \bmod M$ iterando los bits de $B$. Complejidad $O(\log B)$.
+\end{itemize}

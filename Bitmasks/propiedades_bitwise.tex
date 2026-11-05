@@ -1,0 +1,36 @@
+\subsection{Bitwise y Bitmasks - Hoja de Referencia}
+
+\textbf{1. Identidades y XOR ($\oplus$)}
+\begin{itemize}
+    \item \textbf{Básicas:} $A \oplus 0 = A, \quad A \oplus A = 0, \quad A \oplus B = B \oplus A$
+    \item \textbf{Cancelación (Elemento único):} $A \oplus B \oplus B = A$.
+    \item \textbf{XOR de Rango $[L, R]$:} Si $P[i] = A[0] \oplus \dots \oplus A[i]$, entonces $XOR(L,R) = P[R] \oplus P[L-1]$ (o $P[R]$ si $L=0$).
+    \item \textbf{Suma, XOR y AND:} $\mathbf{A + B = (A \oplus B) + 2(A \& B)}$. 
+    \item \textbf{Desigualdad:} $A \oplus B \le A + B$ (La igualdad se cumple $\iff A \& B = 0$, es decir, sin acarreos).
+    \item \textbf{Leyes de De Morgan:} $\sim(A \& B) = (\sim A) \mid (\sim B) \quad \text{y} \quad \sim(A \mid B) = (\sim A) \& (\sim B)$.
+\end{itemize}
+
+\textbf{2. Manipulación de Conjuntos (Máscaras)}
+\begin{itemize}
+    \item \textbf{Comprobar bit $i$:} \texttt{(mask \gg i) \& 1}
+    \item \textbf{Encender bit $i$:} \texttt{mask \mid (1 \ll i)}
+    \item \textbf{Apagar bit $i$:} \texttt{mask \& \sim(1 \ll i)}
+    \item \textbf{Toggle bit $i$:} \texttt{mask \oplus (1 \ll i)}
+    \item \textbf{Operaciones de 2 conjuntos:} Unión ($A \mid B$), Intersección ($A \& B$), Diferencia ($A \ \& \ (\sim B)$), Dif. Simétrica ($A \oplus B$).
+\end{itemize}
+
+\textbf{3. Trucos Aritméticos en $O(1)$}
+\begin{itemize}
+    \item \textbf{Paridad:} $X \& 1 = 1$ (Impar) o $0$ (Par).
+    \item \textbf{Potencias de 2:} $X \ll K = X \cdot 2^K$, y $X \gg K = \lfloor X / 2^K \rfloor$.
+    \item \textbf{Aislar LSB (Fenwick Tree):} $\mathbf{X \& (-X)}$. Extrae el bit encendido más a la derecha. (Ej. $12 \ \& \ -12 = 4$).
+    \item \textbf{Apagar LSB:} $\mathbf{X \& (X-1)}$. Apaga el bit encendido más a la derecha.
+    \item \textbf{Es Potencia de 2?:} $X > 0 \land (X \& (X-1)) == 0$.
+\end{itemize}
+
+\textbf{4. Precauciones Críticas de Implementación (C++)}
+\begin{itemize}
+    \item Para máscaras $> 31$ bits, usa SIEMPRE \texttt{1LL \ll i} (evita Undefined Behavior).
+    \item Precedencia: \texttt{==} se evalúa antes que \texttt{\&}. \textbf{Usa paréntesis:} \texttt{if ((mask \& 1) == 0)}.
+    \item El NOT ($\sim$) invierte todos los bits del tipo. Para limitar el complemento a un universo de $N$ bits válidos: \texttt{(\sim mask) \& ((1LL \ll N) - 1)}.
+\end{itemize}
